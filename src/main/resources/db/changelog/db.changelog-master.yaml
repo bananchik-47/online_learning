@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/001-create-roles-table.yaml
+
+  - include:
+      file: db/changelog/002-create-users-table.yaml
+
+  - include:
+      file: db/changelog/003-create-courses-table.yaml
+
+  - include:
+      file: db/changelog/004-create-course-modules-table.yaml
+
+  - include:
+      file: db/changelog/005-create-lessons-table.yaml
+
+  - include:
+      file: db/changelog/006-create-assignments-table.yaml
+
+  - include:
+      file: db/changelog/007-create-submissions-table.yaml
+
+  - include:
+      file: db/changelog/008-create-enrollments-table.yaml
+
+  - include:
+      file: db/changelog/009-create-user-progress-table.yaml
+
+  - include:
+      file: db/changelog/010-create-uploaded-files-table.yaml

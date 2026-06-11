@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005
+      author: student
+
+      changes:
+        - createTable:
+            tableName: lessons
+            columns:
+              - column:
+                  name: id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: module_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: content
+                  type: TEXT
+
+              - column:
+                  name: order_index
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+
+        - addForeignKeyConstraint:
+            baseTableName: lessons
+            baseColumnNames: module_id
+            referencedTableName: course_modules
+            referencedColumnNames: id
+            constraintName: fk_lessons_module
+            onDelete: CASCADE
+
+        - addUniqueConstraint:
+            tableName: lessons
+            constraintName: uq_lessons_module_order
+            columnNames: module_id, order_index
+
+        - createIndex:
+            indexName: idx_lessons_module_id
+            tableName: lessons
+            columns:
+              - column:
+                  name: module_id

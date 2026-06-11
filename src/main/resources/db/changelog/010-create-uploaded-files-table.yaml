@@ -1,0 +1,106 @@
+databaseChangeLog:
+  - changeSet:
+      id: 010
+      author: student
+
+      changes:
+        - createTable:
+            tableName: uploaded_files
+            columns:
+              - column:
+                  name: id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: original_filename
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: stored_filename
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+              - column:
+                  name: content_type
+                  type: VARCHAR(100)
+
+              - column:
+                  name: file_size
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: uploaded_by_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: submission_id
+                  type: BIGINT
+
+              - column:
+                  name: lesson_id
+                  type: BIGINT
+
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+
+        - addForeignKeyConstraint:
+            baseTableName: uploaded_files
+            baseColumnNames: uploaded_by_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_uploaded_files_user
+            onDelete: RESTRICT
+
+        - addCheckConstraint:
+            tableName: uploaded_files
+            constraintName: chk_uploaded_files_link
+            checkCondition: "submission_id IS NOT NULL OR lesson_id IS NOT NULL"
+
+        - addForeignKeyConstraint:
+            baseTableName: uploaded_files
+            baseColumnNames: submission_id
+            referencedTableName: submissions
+            referencedColumnNames: id
+            constraintName: fk_uploaded_files_submission
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            baseTableName: uploaded_files
+            baseColumnNames: lesson_id
+            referencedTableName: lessons
+            referencedColumnNames: id
+            constraintName: fk_uploaded_files_lesson
+            onDelete: CASCADE
+
+        - createIndex:
+            indexName: idx_uploaded_files_submission_id
+            tableName: uploaded_files
+            columns:
+              - column:
+                  name: submission_id
+
+        - createIndex:
+            indexName: idx_uploaded_files_lesson_id
+            tableName: uploaded_files
+            columns:
+              - column:
+                  name: lesson_id
+
+        - createIndex:
+            indexName: idx_uploaded_files_uploaded_by_id
+            tableName: uploaded_files
+            columns:
+              - column:
+                  name: uploaded_by_id
