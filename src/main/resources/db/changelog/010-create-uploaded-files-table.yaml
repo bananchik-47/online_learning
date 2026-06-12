@@ -2,6 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: 010
       author: student
+      validCheckSum: ANY
 
       changes:
         - createTable:
@@ -63,10 +64,8 @@ databaseChangeLog:
             constraintName: fk_uploaded_files_user
             onDelete: RESTRICT
 
-        - addCheckConstraint:
-            tableName: uploaded_files
-            constraintName: chk_uploaded_files_link
-            checkCondition: "submission_id IS NOT NULL OR lesson_id IS NOT NULL"
+        - sql:
+            sql: "ALTER TABLE uploaded_files ADD CONSTRAINT chk_uploaded_files_link CHECK (submission_id IS NOT NULL OR lesson_id IS NOT NULL)"
 
         - addForeignKeyConstraint:
             baseTableName: uploaded_files
