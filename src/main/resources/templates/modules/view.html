@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="${module.title}">Module</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/app/courses}">Courses</a></li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/app/courses/{id}(id=${course.id})}" th:text="${course.title}">Course</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="${module.title}">Module</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                <h1 class="h3 mb-2" th:text="${module.title}">Module title</h1>
+                <span class="badge text-bg-light text-dark" th:text="'Module ' + ${module.orderIndex}">Module 1</span>
+            </div>
+            <p class="text-muted mb-0" th:text="${module.description}">Module description</p>
+        </div>
+    </div>
+
+    <h2 class="h5 mb-3">
+        <i class="bi bi-book me-1"></i>Lessons
+    </h2>
+
+    <div th:if="${module.lessons == null or module.lessons.isEmpty()}" class="alert alert-info">
+        <i class="bi bi-info-circle me-1"></i>This module has no lessons yet.
+    </div>
+
+    <div class="list-group" th:if="${module.lessons != null and !module.lessons.isEmpty()}">
+        <a th:each="lesson : ${module.lessons}"
+           th:href="@{/app/lessons/{id}(id=${lesson.id})}"
+           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <div>
+                <span class="badge text-bg-secondary me-2" th:text="${lesson.orderIndex}">1</span>
+                <span th:text="${lesson.title}">Lesson title</span>
+            </div>
+            <i class="bi bi-chevron-right text-muted"></i>
+        </a>
+    </div>
+</div>
+</body>
+</html>

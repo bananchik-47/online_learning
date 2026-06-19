@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<form th:fragment="delete(url, message)"
+      th:action="${url}"
+      method="post"
+      class="d-inline"
+      th:attr="onsubmit=|return confirm('${message}');|">
+    <button type="submit" class="btn btn-sm btn-outline-danger" aria-label="Delete">
+        <i class="bi bi-trash"></i>
+    </button>
+</form>
+</body>
+</html>

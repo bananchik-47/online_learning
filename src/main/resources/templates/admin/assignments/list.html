@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout-admin}">
+<head>
+    <title th:text="'Assignments — ' + ${lesson.title}">Assignments</title>
+</head>
+<body>
+<div layout:fragment="admin-content">
+    <div th:replace="~{fragments/admin-breadcrumbs :: trail(${course}, ${module}, ${lesson})}"></div>
+    <div th:replace="~{fragments/admin-page-header :: header('Assignments', 'bi bi-clipboard-check', @{/app/admin/lessons/{lessonId}/assignments/new(lessonId=${lesson.id})}, 'New assignment')}"></div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Max score</th>
+                <th>Due date</th>
+                <th class="text-end">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${assignments.isEmpty()}">
+                <td colspan="5" class="text-center text-muted py-4">No assignments yet.</td>
+            </tr>
+            <tr th:each="assignment : ${assignments}">
+                <td th:text="${assignment.id}">1</td>
+                <td th:text="${assignment.title}">Title</td>
+                <td th:text="${assignment.maxScore}">100</td>
+                <td th:text="${assignment.dueDate != null ? #temporals.format(assignment.dueDate, 'dd.MM.yyyy HH:mm') : '-'}">-</td>
+                <td class="text-end text-nowrap">
+                    <a th:href="@{/app/admin/lessons/{lessonId}/assignments/{assignmentId}/edit(lessonId=${lesson.id}, assignmentId=${assignment.id})}"
+                       class="btn btn-sm btn-outline-secondary" aria-label="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <th:block th:replace="~{fragments/delete-form :: delete(@{/app/admin/lessons/{lessonId}/assignments/{assignmentId}/delete(lessonId=${lesson.id}, assignmentId=${assignment.id})}, 'Delete this assignment?')}"></th:block>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

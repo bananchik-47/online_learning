@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout-admin}">
+<head>
+    <title th:text="'Modules — ' + ${course.title}">Modules</title>
+</head>
+<body>
+<div layout:fragment="admin-content">
+    <div th:replace="~{fragments/admin-breadcrumbs :: trail(${course}, null, null)}"></div>
+    <div th:replace="~{fragments/admin-page-header :: header('Modules', 'bi bi-collection', @{/app/admin/courses/{courseId}/modules/new(courseId=${course.id})}, 'New module')}"></div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+            <tr>
+                <th>Order</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th class="text-end">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${modules.isEmpty()}">
+                <td colspan="4" class="text-center text-muted py-4">No modules yet.</td>
+            </tr>
+            <tr th:each="module : ${modules}">
+                <td th:text="${module.orderIndex}">1</td>
+                <td th:text="${module.title}">Title</td>
+                <td th:text="${#strings.abbreviate(module.description, 80)}">Description</td>
+                <td class="text-end text-nowrap">
+                    <a th:href="@{/app/admin/modules/{id}/lessons(id=${module.id})}" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-book"></i><span class="d-none d-md-inline ms-1">Lessons</span>
+                    </a>
+                    <a th:href="@{/app/admin/courses/{courseId}/modules/{moduleId}/edit(courseId=${course.id}, moduleId=${module.id})}"
+                       class="btn btn-sm btn-outline-secondary" aria-label="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <th:block th:replace="~{fragments/delete-form :: delete(@{/app/admin/courses/{courseId}/modules/{moduleId}/delete(courseId=${course.id}, moduleId=${module.id})}, 'Delete this module?')}"></th:block>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

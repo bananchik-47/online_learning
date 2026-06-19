@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="trail(course, module, lesson)" aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb mb-0 flex-wrap">
+        <li class="breadcrumb-item">
+            <a th:href="@{/app/admin/courses}">Courses</a>
+        </li>
+        <li th:if="${course != null}" class="breadcrumb-item"
+            th:classappend="${module == null} ? 'active'"
+            th:attr="aria-current=${module == null} ? 'page' : null">
+            <a th:if="${module != null}"
+               th:href="@{/app/admin/courses/{id}/modules(id=${course.id})}"
+               th:text="${course.title}">Course</a>
+            <span th:if="${module == null}" th:text="${course.title}">Course</span>
+        </li>
+        <li th:if="${module != null}" class="breadcrumb-item"
+            th:classappend="${lesson == null} ? 'active'"
+            th:attr="aria-current=${lesson == null} ? 'page' : null">
+            <a th:if="${lesson != null}"
+               th:href="@{/app/admin/modules/{id}/lessons(id=${module.id})}"
+               th:text="${module.title}">Module</a>
+            <span th:if="${lesson == null}" th:text="${module.title}">Module</span>
+        </li>
+        <li th:if="${lesson != null}" class="breadcrumb-item active" aria-current="page"
+            th:text="${lesson.title}">Lesson</li>
+    </ol>
+</nav>
+</body>
+</html>

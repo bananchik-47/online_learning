@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="${lesson.title}">Lesson</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/app/courses}">Courses</a></li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/app/courses/{id}(id=${course.id})}" th:text="${course.title}">Course</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/app/modules/{id}(id=${module.id})}" th:text="${module.title}">Module</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="${lesson.title}">Lesson</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+                <h1 class="h3 mb-0" th:text="${lesson.title}">Lesson title</h1>
+                <span class="badge text-bg-light text-dark" th:text="'Lesson ' + ${lesson.orderIndex}">Lesson 1</span>
+            </div>
+            <div class="lesson-content" th:text="${lesson.content}">
+                Lesson content
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-6" th:if="${lesson.files != null and !lesson.files.isEmpty()}">
+            <div class="card h-100">
+                <div class="card-header">
+                    <i class="bi bi-paperclip me-1"></i>Materials
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center"
+                        th:each="file : ${lesson.files}">
+                        <span>
+                            <i class="bi bi-file-earmark me-1"></i>
+                            <span th:text="${file.originalFilename}">file.pdf</span>
+                            <small class="text-muted ms-1" th:text="'(' + ${file.fileSize} + ' bytes)'"></small>
+                        </span>
+                        <a th:href="@{/files/{id}/content(id=${file.id})}"
+                           class="btn btn-sm btn-outline-primary" target="_blank">
+                            <i class="bi bi-download"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-6" th:if="${lesson.assignments != null and !lesson.assignments.isEmpty()}">
+            <div class="card h-100">
+                <div class="card-header">
+                    <i class="bi bi-clipboard-check me-1"></i>Assignments
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" th:each="assignment : ${lesson.assignments}">
+                        <div class="fw-semibold" th:text="${assignment.title}">Assignment</div>
+                        <p class="text-muted small mb-1" th:text="${assignment.description}">Description</p>
+                        <small class="text-muted">
+                            <i class="bi bi-star me-1"></i>Max score:
+                            <span th:text="${assignment.maxScore}">100</span>
+                            <span th:if="${assignment.dueDate != null}" class="ms-2">
+                                <i class="bi bi-calendar me-1"></i>Due:
+                                <span th:text="${#temporals.format(assignment.dueDate, 'dd MMM yyyy HH:mm')}"></span>
+                            </span>
+                        </small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a th:href="@{/app/modules/{id}(id=${module.id})}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Back to module
+        </a>
+    </div>
+</div>
+</body>
+</html>

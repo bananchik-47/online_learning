@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<footer th:fragment="footer" class="bg-light border-top mt-auto py-3">
+    <div class="container text-center text-muted small">
+        <span>&copy; <span th:text="${#dates.year(#dates.createNow())}">2026</span> Online Learning Platform</span>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout-admin}">
+<head>
+    <title>Admin dashboard</title>
+</head>
+<body>
+<div layout:fragment="admin-content">
+    <h1 class="h3 mb-4">
+        <i class="bi bi-speedometer2 me-2"></i>Admin dashboard
+    </h1>
+
+    <div class="row g-3">
+        <div class="col-md-6 col-xl-4">
+            <div class="card h-100 border-primary">
+                <div class="card-body">
+                    <h2 class="h5 card-title">Courses</h2>
+                    <p class="card-text text-muted">Manage courses, modules, lessons and assignments.</p>
+                    <a th:href="@{/app/admin/courses}" class="btn btn-primary">Manage courses</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+            <div class="card h-100 border-success">
+                <div class="card-body">
+                    <h2 class="h5 card-title">Users</h2>
+                    <p class="card-text text-muted">View registered users and create new accounts.</p>
+                    <a th:href="@{/app/admin/users}" class="btn btn-success">Manage users</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

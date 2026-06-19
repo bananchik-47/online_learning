@@ -13,7 +13,7 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI openAPI() {
-        final String securitySchemeName = "sessionAuth";
+        final String securitySchemeName = "basicAuth";
         return new OpenAPI()
                 .info(new Info()
                         .title("Online Learning Platform API")
@@ -25,8 +25,8 @@ public class OpenApiConfig {
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                 .schemaRequirement(securitySchemeName, new SecurityScheme()
                         .name(securitySchemeName)
-                        .type(SecurityScheme.Type.APIKEY)
-                        .in(SecurityScheme.In.COOKIE)
-                        .description("Session cookie obtained after form login at /login"));
+                        .type(SecurityScheme.Type.HTTP)
+                        .scheme("basic")
+                        .description("HTTP Basic Authentication using username and password"));
     }
 }

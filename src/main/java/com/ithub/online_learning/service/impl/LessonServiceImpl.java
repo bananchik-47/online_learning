@@ -47,10 +47,7 @@ public class LessonServiceImpl implements LessonService {
     @Override
     @Transactional(readOnly = true)
     public LessonResponse findById(Long id) {
-        Lesson lesson = getLessonById(id);
-        lesson.getAssignments().size();
-        lesson.getUploadedFiles().size();
-        return lessonMapper.toResponse(lesson);
+        return lessonMapper.toResponse(getLessonById(id));
     }
 
     @Override
@@ -70,7 +67,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     private Lesson getLessonById(Long id) {
-        return lessonRepository.findById(id)
+        return lessonRepository.findByIdWithDetails(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Lesson not found: " + id));
     }
 }

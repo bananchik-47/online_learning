@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout-admin}">
+<head>
+    <title th:text="${editMode} ? 'Edit course' : 'New course'">Course form</title>
+</head>
+<body>
+<div layout:fragment="admin-content">
+    <h1 class="h3 mb-4">
+        <i th:class="${editMode} ? 'bi bi-pencil me-2' : 'bi bi-plus-circle me-2'"></i>
+        <span th:text="${editMode} ? 'Edit course' : 'New course'">Course form</span>
+    </h1>
+
+    <div th:replace="~{fragments/admin-form-card :: open}"></div>
+    <form th:action="${editMode} ? @{/app/admin/courses/{id}/edit(id=${courseId})} : @{/app/admin/courses}"
+          th:object="${courseForm}" method="post" novalidate>
+        <div th:replace="~{fragments/form-controls :: field('title', 'Title', 'text', true)}"></div>
+        <div th:replace="~{fragments/form-controls :: textarea('description', 'Description', 4)}"></div>
+        <div th:replace="~{fragments/form-controls :: checkbox('isPublished', 'Published')}"></div>
+        <div th:replace="~{fragments/form-controls :: actions(${editMode} ? 'Save' : 'Create', @{/app/admin/courses})}"></div>
+    </form>
+    <div th:replace="~{fragments/admin-form-card :: close}"></div>
+</div>
+</body>
+</html>

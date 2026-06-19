@@ -11,6 +11,8 @@ import com.ithub.online_learning.repository.RoleRepository;
 import com.ithub.online_learning.repository.UserRepository;
 import com.ithub.online_learning.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,8 +63,14 @@ public class UserServiceImpl implements UserService {
         return userMapper.toResponse(user);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page<UserResponse> findAll(Pageable pageable) {
+        return userRepository.findAllWithRole(pageable).map(userMapper::toResponse);
+    }
+
     private User getUserById(Long id) {
-        return userRepository.findById(id)
+        return userRepository.findByIdWithRole(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found: " + id));
     }
 }

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout-admin}">
+<head>
+    <title th:text="'User — ' + ${user.username}">User</title>
+</head>
+<body>
+<div layout:fragment="admin-content">
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-4">
+        <h1 class="h3 mb-0"><i class="bi bi-person me-2"></i>User details</h1>
+        <a th:href="@{/app/admin/users}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Back to list
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-bordered mb-0">
+                <tbody>
+                <tr>
+                    <th class="table-light w-25">ID</th>
+                    <td th:text="${user.id}">1</td>
+                </tr>
+                <tr>
+                    <th class="table-light">Username</th>
+                    <td th:text="${user.username}">username</td>
+                </tr>
+                <tr>
+                    <th class="table-light">Email</th>
+                    <td th:text="${user.email}">email</td>
+                </tr>
+                <tr>
+                    <th class="table-light">First name</th>
+                    <td th:text="${user.firstName} ?: '-'">-</td>
+                </tr>
+                <tr>
+                    <th class="table-light">Last name</th>
+                    <td th:text="${user.lastName} ?: '-'">-</td>
+                </tr>
+                <tr>
+                    <th class="table-light">Role</th>
+                    <td><span class="badge text-bg-info" th:text="${user.role}">ROLE</span></td>
+                </tr>
+                <tr>
+                    <th class="table-light">Enabled</th>
+                    <td>
+                        <span th:if="${user.enabled}" class="badge text-bg-success">Yes</span>
+                        <span th:unless="${user.enabled}" class="badge text-bg-secondary">No</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="table-light">Registered</th>
+                    <td th:text="${user.createdAt != null ? #temporals.format(user.createdAt, 'dd.MM.yyyy HH:mm') : '-'}">-</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

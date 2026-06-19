@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout-admin}">
+<head>
+    <title th:text="'Lessons — ' + ${module.title}">Lessons</title>
+</head>
+<body>
+<div layout:fragment="admin-content">
+    <div th:replace="~{fragments/admin-breadcrumbs :: trail(${course}, ${module}, null)}"></div>
+    <div th:replace="~{fragments/admin-page-header :: header('Lessons', 'bi bi-book', @{/app/admin/modules/{moduleId}/lessons/new(moduleId=${module.id})}, 'New lesson')}"></div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+            <tr>
+                <th>Order</th>
+                <th>Title</th>
+                <th class="text-end">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${lessons.isEmpty()}">
+                <td colspan="3" class="text-center text-muted py-4">No lessons yet.</td>
+            </tr>
+            <tr th:each="lesson : ${lessons}">
+                <td th:text="${lesson.orderIndex}">1</td>
+                <td th:text="${lesson.title}">Title</td>
+                <td class="text-end text-nowrap">
+                    <a th:href="@{/app/admin/lessons/{id}/assignments(id=${lesson.id})}" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-clipboard-check"></i><span class="d-none d-md-inline ms-1">Assignments</span>
+                    </a>
+                    <a th:href="@{/app/admin/modules/{moduleId}/lessons/{lessonId}/edit(moduleId=${module.id}, lessonId=${lesson.id})}"
+                       class="btn btn-sm btn-outline-secondary" aria-label="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <th:block th:replace="~{fragments/delete-form :: delete(@{/app/admin/modules/{moduleId}/lessons/{lessonId}/delete(moduleId=${module.id}, lessonId=${lesson.id})}, 'Delete this lesson?')}"></th:block>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

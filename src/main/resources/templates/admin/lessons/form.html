@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout-admin}">
+<head>
+    <title th:text="${editMode} ? 'Edit lesson' : 'New lesson'">Lesson form</title>
+</head>
+<body>
+<div layout:fragment="admin-content">
+    <div th:replace="~{fragments/admin-breadcrumbs :: trail(${course}, ${module}, null)}"></div>
+    <p class="text-muted">Module: <span th:text="${module.title}">Module</span></p>
+    <h1 class="h3 mb-4">
+        <i th:class="${editMode} ? 'bi bi-pencil me-2' : 'bi bi-plus-circle me-2'"></i>
+        <span th:text="${editMode} ? 'Edit lesson' : 'New lesson'">Lesson form</span>
+    </h1>
+
+    <th:block th:replace="~{fragments/admin-form-card :: open}"></th:block>
+    <form th:action="${editMode}
+            ? @{/app/admin/modules/{moduleId}/lessons/{lessonId}/edit(moduleId=${module.id}, lessonId=${lessonId})}
+            : @{/app/admin/modules/{moduleId}/lessons(moduleId=${module.id})}"
+          th:object="${lessonForm}" method="post" novalidate>
+        <div th:replace="~{fragments/form-controls :: field('title', 'Title', 'text', true)}"></div>
+        <div th:replace="~{fragments/form-controls :: textarea('content', 'Content', 8)}"></div>
+        <div th:replace="~{fragments/form-controls :: field('orderIndex', 'Order', 'number', true)}"></div>
+        <div th:replace="~{fragments/form-controls :: actions(${editMode} ? 'Save' : 'Create', @{/app/admin/modules/{id}/lessons(id=${module.id})})}"></div>
+    </form>
+    <th:block th:replace="~{fragments/admin-form-card :: close}"></th:block>
+</div>
+</body>
+</html>

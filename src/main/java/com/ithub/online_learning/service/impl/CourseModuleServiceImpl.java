@@ -33,7 +33,8 @@ public class CourseModuleServiceImpl implements CourseModuleService {
         CourseModule module = courseModuleMapper.toEntity(request);
         module.setCourse(course);
 
-        return courseModuleMapper.toResponse(courseModuleRepository.save(module));
+        CourseModule savedModule = courseModuleRepository.saveAndFlush(module);
+        return courseModuleMapper.toResponse(savedModule);
     }
 
     @Override
@@ -46,17 +47,19 @@ public class CourseModuleServiceImpl implements CourseModuleService {
     @Override
     @Transactional(readOnly = true)
     public CourseModuleResponse findById(Long id) {
-        CourseModule module = getModuleById(id);
-        module.getLessons().size();
-        return courseModuleMapper.toResponse(module);
+        return courseModuleMapper.toResponse(getModuleById(id));
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<CourseModuleResponse> findByCourseId(Long courseId) {
-        List<CourseModule> modules = courseModuleRepository.findByCourseIdOrderByOrderIndexAsc(courseId);
-        modules.forEach(module -> module.getLessons().size());
-        return courseModuleMapper.toResponseList(modules);
+        if (!courseRepository.existsById(courseId)) {
+            throw new ResourceNotFoundException("Course not found: " + courseId);
+        }
+
+        return courseModuleMapper.toResponseList(
+                courseModuleRepository.findByCourseIdOrderByOrderIndexAsc(courseId)
+        );
     }
 
     @Override
@@ -68,7 +71,7 @@ public class CourseModuleServiceImpl implements CourseModuleService {
     }
 
     private CourseModule getModuleById(Long id) {
-        return courseModuleRepository.findById(id)
+        return courseModuleRepository.findByIdWithLessons(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Course module not found: " + id));
     }
 }
