@@ -14,7 +14,7 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
     @Query("SELECT l FROM Lesson l WHERE l.module.id = :moduleId ORDER BY l.orderIndex ASC")
     List<Lesson> findByModuleIdOrderByOrderIndexAsc(@Param("moduleId") Long moduleId);
 
-    @EntityGraph(attributePaths = {"assignments", "uploadedFiles"})
+    @EntityGraph(attributePaths = "assignments")
     @Query("SELECT l FROM Lesson l WHERE l.id = :id")
-    Optional<Lesson> findByIdWithDetails(@Param("id") Long id);
+    Optional<Lesson> findByIdWithAssignments(@Param("id") Long id);
 }

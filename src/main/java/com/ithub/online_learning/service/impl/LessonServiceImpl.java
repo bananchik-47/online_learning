@@ -67,7 +67,9 @@ public class LessonServiceImpl implements LessonService {
     }
 
     private Lesson getLessonById(Long id) {
-        return lessonRepository.findByIdWithDetails(id)
+        Lesson lesson = lessonRepository.findByIdWithAssignments(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Lesson not found: " + id));
+        lesson.getUploadedFiles().size();
+        return lesson;
     }
 }
