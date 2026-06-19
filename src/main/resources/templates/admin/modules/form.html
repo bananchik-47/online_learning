@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout-admin}">
+<head>
+    <title th:text="${editMode} ? 'Edit module' : 'New module'">Module form</title>
+</head>
+<body>
+<div layout:fragment="admin-content">
+    <div th:replace="~{fragments/admin-breadcrumbs :: trail(${course}, null, null)}"></div>
+    <p class="text-muted">Course: <span th:text="${course.title}">Course</span></p>
+    <h1 class="h3 mb-4">
+        <i th:class="${editMode} ? 'bi bi-pencil me-2' : 'bi bi-plus-circle me-2'"></i>
+        <span th:text="${editMode} ? 'Edit module' : 'New module'">Module form</span>
+    </h1>
+
+    <div th:replace="~{fragments/admin-form-card :: open}"></div>
+    <form th:action="${editMode}
+            ? @{/app/admin/courses/{courseId}/modules/{moduleId}/edit(courseId=${course.id}, moduleId=${moduleId})}
+            : @{/app/admin/courses/{courseId}/modules(courseId=${course.id})}"
+          th:object="${moduleForm}" method="post" novalidate>
+        <div th:replace="~{fragments/form-controls :: field('title', 'Title', 'text', true)}"></div>
+        <div th:replace="~{fragments/form-controls :: textarea('description', 'Description', 3)}"></div>
+        <div th:replace="~{fragments/form-controls :: field('orderIndex', 'Order', 'number', true)}"></div>
+        <div th:replace="~{fragments/form-controls :: actions(${editMode} ? 'Save' : 'Create', @{/app/admin/courses/{id}/modules(id=${course.id})})}"></div>
+    </form>
+    <div th:replace="~{fragments/admin-form-card :: close}"></div>
+</div>
+</body>
+</html>

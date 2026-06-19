@@ -1,0 +1,17 @@
+/* App-specific styles complementing Bootstrap */
+
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+.lesson-content {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+@media (max-width: 576px) {
+    .table-responsive .btn-sm {
+        padding: 0.2rem 0.4rem;
+    }
+}

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="header(title, icon, actionUrl, actionLabel)"
+     class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-4">
+    <h1 class="h3 mb-0">
+        <i th:class="${icon} + ' me-2'"></i>
+        <span th:text="${title}">Title</span>
+    </h1>
+    <a th:if="${actionUrl != null}" th:href="${actionUrl}" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1"></i>
+        <span th:text="${actionLabel}">New</span>
+    </a>
+</div>
+</body>
+</html>

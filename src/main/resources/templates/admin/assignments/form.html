@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout-admin}">
+<head>
+    <title th:text="${editMode} ? 'Edit assignment' : 'New assignment'">Assignment form</title>
+</head>
+<body>
+<div layout:fragment="admin-content">
+    <div th:replace="~{fragments/admin-breadcrumbs :: trail(${course}, ${module}, ${lesson})}"></div>
+    <p class="text-muted">Lesson: <span th:text="${lesson.title}">Lesson</span></p>
+    <h1 class="h3 mb-4">
+        <i th:class="${editMode} ? 'bi bi-pencil me-2' : 'bi bi-plus-circle me-2'"></i>
+        <span th:text="${editMode} ? 'Edit assignment' : 'New assignment'">Assignment form</span>
+    </h1>
+
+    <th:block th:replace="~{fragments/admin-form-card :: open}"></th:block>
+    <form th:action="${editMode}
+            ? @{/app/admin/lessons/{lessonId}/assignments/{assignmentId}/edit(lessonId=${lesson.id}, assignmentId=${assignmentId})}
+            : @{/app/admin/lessons/{lessonId}/assignments(lessonId=${lesson.id})}"
+          th:object="${assignmentForm}" method="post" novalidate>
+        <div th:replace="~{fragments/form-controls :: field('title', 'Title', 'text', true)}"></div>
+        <div th:replace="~{fragments/form-controls :: textarea('description', 'Description', 4)}"></div>
+        <div th:replace="~{fragments/form-controls :: field('maxScore', 'Max score', 'number', true)}"></div>
+        <div class="mb-3">
+            <label for="dueDate" class="form-label">Due date</label>
+            <input type="datetime-local" class="form-control" id="dueDate" th:field="*{dueDate}"
+                   th:classappend="${#fields.hasErrors('dueDate')} ? 'is-invalid'">
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('dueDate')}" th:errors="*{dueDate}"></div>
+        </div>
+        <div th:replace="~{fragments/form-controls :: actions(${editMode} ? 'Save' : 'Create', @{/app/admin/lessons/{id}/assignments(id=${lesson.id})})}"></div>
+    </form>
+    <th:block th:replace="~{fragments/admin-form-card :: close}"></th:block>
+</div>
+</body>
+</html>

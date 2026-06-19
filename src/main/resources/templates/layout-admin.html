@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title layout:title-pattern="$CONTENT_TITLE - Admin">Admin</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row g-4">
+        <div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
+        <main class="col-lg-9 col-xl-10">
+            <div layout:fragment="admin-content"></div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

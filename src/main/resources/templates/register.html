@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Register</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h1 class="h4 mb-4 text-center">
+                        <i class="bi bi-person-plus me-2"></i>Create account
+                    </h1>
+
+                    <form th:action="@{/register}" th:object="${registerRequest}" method="post" novalidate>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div th:replace="~{fragments/form-controls :: field('firstName', 'First name', 'text', false)}"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <div th:replace="~{fragments/form-controls :: field('lastName', 'Last name', 'text', false)}"></div>
+                            </div>
+                        </div>
+                        <div th:replace="~{fragments/form-controls :: field('username', 'Username', 'text', true)}"></div>
+                        <div th:replace="~{fragments/form-controls :: field('email', 'Email', 'email', true)}"></div>
+                        <div th:replace="~{fragments/form-controls :: field('password', 'Password', 'password', true)}"></div>
+                        <div class="form-text mb-3">At least 6 characters.</div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-person-plus me-1"></i>Register
+                            </button>
+                        </div>
+                    </form>
+
+                    <p class="text-center text-muted mt-4 mb-0">
+                        Already have an account?
+                        <a th:href="@{/login}">Sign in</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

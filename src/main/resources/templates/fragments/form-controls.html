@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="field(field, label, type, required)">
+    <div class="mb-3">
+        <label th:for="${field}" class="form-label" th:text="${label}">Label</label>
+        <input th:type="${type}" class="form-control" th:field="*{__${field}__}" th:id="${field}"
+               th:classappend="${#fields.hasErrors(field)} ? 'is-invalid'"
+               th:required="${required}">
+        <div class="invalid-feedback" th:if="${#fields.hasErrors(field)}" th:errors="*{__${field}__}"></div>
+    </div>
+</th:block>
+
+<th:block th:fragment="textarea(field, label, rows)">
+    <div class="mb-3">
+        <label th:for="${field}" class="form-label" th:text="${label}">Label</label>
+        <textarea class="form-control" th:field="*{__${field}__}" th:id="${field}" th:rows="${rows}"
+                  th:classappend="${#fields.hasErrors(field)} ? 'is-invalid'"></textarea>
+        <div class="invalid-feedback" th:if="${#fields.hasErrors(field)}" th:errors="*{__${field}__}"></div>
+    </div>
+</th:block>
+
+<th:block th:fragment="checkbox(field, label)">
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" th:field="*{__${field}__}" th:id="${field}">
+        <label class="form-check-label" th:for="${field}" th:text="${label}">Label</label>
+        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors(field)}" th:errors="*{__${field}__}"></div>
+    </div>
+</th:block>
+
+<th:block th:fragment="actions(submitLabel, cancelUrl)">
+    <div class="d-flex flex-wrap gap-2">
+        <button type="submit" class="btn btn-primary" th:text="${submitLabel}">Save</button>
+        <a th:href="${cancelUrl}" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</th:block>
+</body>
+</html>

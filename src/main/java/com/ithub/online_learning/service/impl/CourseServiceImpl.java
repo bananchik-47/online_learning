@@ -5,9 +5,12 @@ import com.ithub.online_learning.dto.request.CourseUpdateRequest;
 import com.ithub.online_learning.dto.response.CourseDetailResponse;
 import com.ithub.online_learning.dto.response.CourseResponse;
 import com.ithub.online_learning.entity.Course;
+import com.ithub.online_learning.entity.CourseModule;
 import com.ithub.online_learning.entity.User;
 import com.ithub.online_learning.exception.ResourceNotFoundException;
 import com.ithub.online_learning.mapper.CourseMapper;
+import com.ithub.online_learning.mapper.CourseModuleMapper;
+import com.ithub.online_learning.repository.CourseModuleRepository;
 import com.ithub.online_learning.repository.CourseRepository;
 import com.ithub.online_learning.repository.UserRepository;
 import com.ithub.online_learning.service.CourseService;
@@ -25,8 +28,10 @@ import java.util.List;
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
+    private final CourseModuleRepository courseModuleRepository;
     private final UserRepository userRepository;
     private final CourseMapper courseMapper;
+    private final CourseModuleMapper courseModuleMapper;
 
     @Override
     public CourseResponse create(CourseCreateRequest request, Long instructorId) {
@@ -59,8 +64,11 @@ public class CourseServiceImpl implements CourseService {
     @Transactional(readOnly = true)
     public CourseDetailResponse findDetailById(Long id) {
         Course course = getCourseById(id);
-        course.getModules().forEach(module -> module.getLessons().size());
-        return courseMapper.toDetailResponse(course);
+        List<CourseModule> modules = courseModuleRepository.findByCourseIdOrderByOrderIndexAsc(id);
+
+        CourseDetailResponse detailResponse = courseMapper.toDetailResponse(course);
+        detailResponse.setModules(courseModuleMapper.toResponseList(modules));
+        return detailResponse;
     }
 
     @Override
@@ -85,7 +93,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     private Course getCourseById(Long id) {
-        return courseRepository.findById(id)
+        return courseRepository.findByIdWithInstructor(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found: " + id));
     }
 }
