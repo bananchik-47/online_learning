@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/online_learning
-    username: postgres
-    password: 1234
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/online_learning}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:1234}
 
   jpa:
     hibernate:
@@ -13,4 +13,11 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
   thymeleaf:
-    cache: false
+    cache: ${SPRING_THYMELEAF_CACHE:false}
+
+server:
+  port: ${SERVER_PORT:8080}
+
+app:
+  upload:
+    dir: ${APP_UPLOAD_DIR:uploads}
